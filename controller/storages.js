@@ -8,7 +8,11 @@ const PATH = `${__dirname}/../storage`;
 const getItems = async (req = request, res = response) => {
   try {
     const data = await storagesModels.find({});
-    res.send({ data });
+    res.send({
+      data,
+      ok: true,
+      message: "Has obtenido la lista de las imagenes",
+    });
   } catch (error) {
     res.send("ERROR NO SE PUDIERON OBTENER LOS ARCHIVOS");
   }
@@ -32,7 +36,11 @@ const createItem = async (req = request, res = response) => {
       url: `${PUBLIC_URL}/${file.filename}`,
     };
     const data = await storagesModels.create(fileData);
-    res.send({ data });
+    res.send({
+      data,
+      ok: true,
+      message: "Se subio la imagen",
+    });
   } catch (error) {
     res.send("Error");
   }
