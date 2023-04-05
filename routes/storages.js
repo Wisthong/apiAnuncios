@@ -6,9 +6,11 @@ const {
   deleteItem,
 } = require("../controller/storages");
 const { uploadMiddleware } = require("../utils/handleStorage");
+const { checkAuth } = require("../middlewares/authSesion");
+const { checkRol } = require("../middlewares/rol");
 const router = express.Router();
 
-router.post("/", uploadMiddleware.single("myFile"), createItem);
+router.post("/", [checkAuth, checkRol(["admin"]),uploadMiddleware.single("myFile")], createItem);
 
 router.get("/", getItems);
 
