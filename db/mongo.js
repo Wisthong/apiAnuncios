@@ -1,20 +1,16 @@
 const { connect, set } = require("mongoose");
 
 const connectionDB = () => {
-  connect(
-    process.env.URI,
-    {
+  try {
+    connect(process.env.URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-    },
-    (err) => {
-      if (!err) {
-        console.log("***Conexion exitosa***");
-      } else {
-        throw new Error("***Error de conexion***");
-      }
-    }
-  );
+    });
+    console.log("Conexion exitosa");
+  } catch (error) {
+    console.log("Error de conexion");
+    //     process.exit();
+  }
 };
 
 set("strictQuery", false);
