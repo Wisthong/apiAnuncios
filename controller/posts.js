@@ -7,12 +7,11 @@ const {
 const { matchedData } = require("express-validator");
 const { signToken } = require("../helpers/handleJwt");
 
-const createItem = async (req = request, res = response) => {
+const createPost = async (req = request, res = response) => {
   try {
     const { user } = req;
     const body = matchedData(req);
     const token = await signToken(user);
-    console.log(body);
     const data = await postModel.create(body);
     res.send({
       data,
@@ -24,4 +23,26 @@ const createItem = async (req = request, res = response) => {
   }
 };
 
-module.exports = { createItem };
+const getPosts = async (req = request, res = response) => {
+  try {
+    // const data = await deviceModel.find();
+    const data = await postModel.findAllData();
+    // data.set("userAdmin", undefined, { strict: false });
+    if (!data) {
+      return handleErrorResponse(
+        res,
+        "No se pudo obtener la lista de dispositivos",
+        401
+      );
+    }
+    res.send({
+      data,
+      ok: true,
+      message: "Has obtenido la lista de los dispositivos",
+    });
+  } catch (error) {
+    handleErrorResponse(res, error);
+  }
+};
+
+module.exports = { createPost, getPosts };
