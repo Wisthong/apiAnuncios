@@ -15,6 +15,10 @@ const PostSchema = new Schema(
     category: {
       type: String,
     },
+    status: {
+      type: Boolean,
+      default: false,
+    },
     archive: {
       type: Types.ObjectId,
     },
