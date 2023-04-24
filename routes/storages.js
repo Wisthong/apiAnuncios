@@ -10,12 +10,16 @@ const { checkAuth } = require("../middlewares/authSesion");
 const { checkRol } = require("../middlewares/rol");
 const router = express.Router();
 
-router.post("/", [checkAuth, checkRol(["admin"]),uploadMiddleware.single("myFile")], createItem);
+router.post(
+  "/",
+  [checkAuth, checkRol(["admin", "master"]), uploadMiddleware.single("myFile")],
+  createItem
+);
 
 router.get("/", getItems);
 
 router.get("/:id", getItem);
 
-router.delete("/:id", deleteItem);
+router.delete("/:id", [checkAuth, checkRol(["admin", "master"])], deleteItem);
 
 module.exports = router;

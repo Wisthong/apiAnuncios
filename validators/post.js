@@ -16,4 +16,11 @@ const validatorPost = [
   },
 ];
 
-module.exports = { validatorPost };
+const validatorGetPost = [
+  check("id", "Debes ingresar un id valido").exists().notEmpty().isMongoId(),
+  (req, res, next) => {
+    validateResult(req, res, next);
+  },
+];
+
+module.exports = { validatorPost, validatorGetPost };
