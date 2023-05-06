@@ -3,24 +3,33 @@ const mongoose_delete = require("mongoose-delete");
 
 const PostSchema = new Schema(
   {
-    item: {
+    archive: {
+      type: Types.ObjectId,
+    },
+    category: {
       type: String,
     },
     description: {
       type: String,
     },
+    item: {
+      type: String,
+    },
     line: {
       type: String,
     },
-    category: {
+    line2: {
       type: String,
+    },
+    priceClient: {
+      type: Number,
+    },
+    priceSuper: {
+      type: Number,
     },
     status: {
       type: Boolean,
       default: false,
-    },
-    archive: {
-      type: Types.ObjectId,
     },
   },
   {
