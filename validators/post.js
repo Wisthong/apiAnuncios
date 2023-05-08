@@ -18,7 +18,10 @@ const validatorPost = [
     .exists()
     .notEmpty(),
   check("status", "Debes ingresar el status").default(false),
-
+  check("title", "Debes ingresar el titulo").exists().notEmpty(),
+  check("porcentage", "Debes ingresar el titulo").exists({ checkNull: false }),
+  check("infoDesc", "Debes ingresar el titulo").exists({ checkNull: false }),
+  check("valid", "Debes ingresar el titulo").exists({ checkNull: false }),
   (req, res, next) => {
     validateResult(req, res, next);
   },

@@ -27,6 +27,19 @@ const PostSchema = new Schema(
     priceSuper: {
       type: Number,
     },
+    title: {
+      type: String,
+    },
+    porcentage: {
+      type: String,
+    },
+    infoDesc: {
+      type: String,
+    },
+    valid: {
+      type: String,
+    },
+
     status: {
       type: Boolean,
       default: false,
