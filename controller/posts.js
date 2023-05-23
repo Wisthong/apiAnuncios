@@ -119,9 +119,9 @@ const getPost = async (req = request, res = response) => {
   try {
     const { id } = matchedData(req);
     // console.log(id);
-    const data = await postModel.findOne({ _id: id });
     // const data = await postModel.findOne({ _id: id });
-    // const data = await postModel.findOneData(id);
+    // const data = await postModel.findOne({ _id: id });
+    const data = await postModel.findOneData(id);
 
     res.send({
       data,
@@ -132,5 +132,6 @@ const getPost = async (req = request, res = response) => {
     handleErrorResponse(res, error);
   }
 };
+
 
 module.exports = { createPost, getPosts, deletePost, updatePost, getPost };

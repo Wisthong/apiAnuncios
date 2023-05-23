@@ -72,7 +72,7 @@ PostSchema.statics.findOneData = function (id) {
   const joinData = this.aggregate([
     {
       $match: {
-        _id: Types.ObjectId(id),
+        _id: new Types.ObjectId(id),
       },
     },
     {
@@ -84,7 +84,7 @@ PostSchema.statics.findOneData = function (id) {
       },
     },
     {
-      $unwind: "$archiveJoin",
+      $unwind: "$archive",
     },
   ]);
   return joinData;
