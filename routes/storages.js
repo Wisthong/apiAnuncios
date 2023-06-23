@@ -5,7 +5,8 @@ const {
   getItems,
   deleteItem,
 } = require("../controller/storages");
-const { uploadMiddleware } = require("../utils/handleStorage");
+// const { uploadMiddleware } = require("../utils/handleStorage");
+const { uploadMiddleware } = require("../utils/handleStorageCloudinary");
 const { checkAuth } = require("../middlewares/authSesion");
 const { checkRol } = require("../middlewares/rol");
 const router = express.Router();

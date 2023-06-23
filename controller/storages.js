@@ -39,14 +39,35 @@ const getItem = async (req = request, res = response) => {
   }
 };
 
-const createItem = async (req = request, res = response) => {
+// const createItem = async (req = request, res = response) => {
+//   try {
+//     const { user } = req;
+//     const token = await signToken(user);
+//     const { body, file } = req;
+//     const fileData = {
+//       filename: file.filename,
+//       url: `${PUBLIC_URL}/${file.filename}`,
+//       usuario: user,
+//       usuario: user,
+//     };
+//     const data = await storagesModels.create(fileData);
+//     res.send({
+//       data,
+//       ok: true,
+//       message: "Se subio la imagen",
+//     });
+//   } catch (error) {
+//     res.send("Error en la peticion create", error);
+//   }
+// };
+
+const createItem = async (req, res) => {
   try {
     const { user } = req;
-    const token = await signToken(user);
     const { body, file } = req;
     const fileData = {
       filename: file.filename,
-      url: `${PUBLIC_URL}/${file.filename}`,
+      url: file.path,
       usuario: user,
     };
     const data = await storagesModels.create(fileData);
@@ -56,7 +77,7 @@ const createItem = async (req = request, res = response) => {
       message: "Se subio la imagen",
     });
   } catch (error) {
-    res.send("Error en la peticion create", error);
+    handleErrorResponse(res, "Error al subir archivo", 404);
   }
 };
 
