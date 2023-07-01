@@ -6,6 +6,9 @@ const PostSchema = new Schema(
     archive: {
       type: Types.ObjectId,
     },
+    information: {
+      type: Types.ObjectId,
+    },
     category: {
       type: String,
     },
@@ -27,18 +30,21 @@ const PostSchema = new Schema(
     priceSuper: {
       type: Number,
     },
-    title: {
-      type: String,
+    price14: {
+      type: Number,
     },
-    porcentage: {
-      type: String,
-    },
-    infoDesc: {
-      type: String,
-    },
-    valid: {
-      type: String,
-    },
+    // title: {
+    //   type: String,
+    // },
+    // porcentage: {
+    //   type: String,
+    // },
+    // infoDesc: {
+    //   type: String,
+    // },
+    // valid: {
+    //   type: String,
+    // },
 
     status: {
       type: Boolean,
