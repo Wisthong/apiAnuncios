@@ -70,6 +70,14 @@ PostSchema.statics.findAllData = function () {
     {
       $unwind: "$archive",
     },
+    {
+      $lookup: {
+        from: "informationstorages", //TODO: Desde donde
+        localField: "information", //TODO: Campo de referencia en el modelo actual
+        foreignField: "_id", //TODO: Campo de referencia para el join tabla a juntar
+        as: "dataDescuentoJoin", //TODO: Apodo
+      },
+    },
   ]);
   return joinData;
 };
@@ -91,6 +99,14 @@ PostSchema.statics.findOneData = function (id) {
     },
     {
       $unwind: "$archive",
+    },
+    {
+      $lookup: {
+        from: "informationstorages", //TODO: Desde donde
+        localField: "information", //TODO: Campo de referencia en el modelo actual
+        foreignField: "_id", //TODO: Campo de referencia para el join tabla a juntar
+        as: "dataDescuentoJoin", //TODO: Apodo
+      },
     },
   ]);
   return joinData;
