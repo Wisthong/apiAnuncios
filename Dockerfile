@@ -1,4 +1,4 @@
-FROM node:latest as node
+FROM node:18-alpine as runner
 
 WORKDIR /app
 COPY . .
