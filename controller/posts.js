@@ -58,7 +58,7 @@ const deletePost = async (req = request, res = response) => {
         404
       );
     }
-    const data = await postModel.deleteMany({ _id: id });
+    const data = await postModel.delete({ _id: id });
 
     res.send({
       token,
@@ -66,6 +66,7 @@ const deletePost = async (req = request, res = response) => {
       message: "Post eliminado",
     });
   } catch (error) {
+    console.log('Error');
     handleHttpError(res, error);
   }
 };

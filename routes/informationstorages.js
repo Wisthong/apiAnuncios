@@ -9,6 +9,7 @@ const {
 const { uploadMiddleware } = require("../utils/handleStorageGalery");
 const { checkAuth } = require("../middlewares/authSesion");
 const { checkRol } = require("../middlewares/rol");
+const { validatorGetPost } = require("../validators/post");
 const router = express.Router();
 
 router.post(
@@ -21,6 +22,6 @@ router.get("/", getItems);
 
 router.get("/:id", getItem);
 
-router.delete("/:id", [checkAuth, checkRol(["admin", "master"])], deleteItem);
+router.delete("/:id", [checkAuth, checkRol(["admin", "master"])], [validatorGetPost], deleteItem);
 
 module.exports = router;

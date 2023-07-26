@@ -29,7 +29,7 @@ router.put(
 
 router.delete(
   "/:id",
-  [checkRol(["admin", "master"]), validatorGetPost],
+  [checkAuth, checkRol(["admin", "master"]), validatorGetPost],
   deletePost
 );
 

@@ -15,6 +15,9 @@ const validatorPost = [
   check("priceClient", "Debes ingresar el precio del producto para Clientes")
     .exists()
     .notEmpty(),
+  check("priceMayorista", "Debes ingresar el precio del producto mayorista")
+    .exists()
+    .notEmpty(),
   check("priceSuper", "Debes ingresar el precio del producto para Clientes")
     .exists()
     .notEmpty(),

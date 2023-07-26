@@ -28,6 +28,7 @@ const getItems = async (req = request, res = response) => {
 const getItem = async (req = request, res = response) => {
   try {
     const { id } = matchedData(req);
+    console.log(id);
     const data = await storagesModels.findById(id);
     res.send({
       data,

@@ -27,6 +27,9 @@ const PostSchema = new Schema(
     priceClient: {
       type: Number,
     },
+    priceMayorista: {
+      type: Number,
+    },
     priceSuper: {
       type: Number,
     },
