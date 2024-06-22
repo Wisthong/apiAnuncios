@@ -1,17 +1,23 @@
 const { Schema, model, Types } = require("mongoose");
 const mongoose_delete = require("mongoose-delete");
 
-const StorageSchema = new Schema(
+// filename: {
+//   type: String,
+// },
+const Posters = new Schema(
   {
+    descripcion: {
+      type: String,
+    },
     url: {
       type: String,
     },
-    filename: {
+    categoria: {
       type: String,
     },
-    // usuario: {
-    //   type: Types.ObjectId,
-    // },
+    item: {
+      type: Number,
+    },
   },
   {
     timestamps: true,
@@ -19,7 +25,8 @@ const StorageSchema = new Schema(
   }
 );
 
-// StorageSchema.statics.findAllData = function () {
+
+// Posters.statics.findAllData = function () {
 //   const joinData = this.aggregate([
 //     {
 //       $lookup: {
@@ -36,7 +43,7 @@ const StorageSchema = new Schema(
 //   return joinData;
 // };
 
-// StorageSchema.statics.findOneData = function (id) {
+// Posters.statics.findOneData = function (id) {
 //   const joinData = this.aggregate([
 //     {
 //       $match: {
@@ -58,5 +65,5 @@ const StorageSchema = new Schema(
 //   return joinData;
 // };
 
-StorageSchema.plugin(mongoose_delete, { overrideMethods: "all" });
-module.exports = model("storages", StorageSchema);
+Posters.plugin(mongoose_delete, { overrideMethods: "all" });
+module.exports = model("posters", Posters);

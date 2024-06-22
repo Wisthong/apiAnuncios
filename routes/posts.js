@@ -1,5 +1,5 @@
 const express = require("express");
-const { validatorPost, validatorGetPost } = require("../validators/post");
+const { validatorPost, validatorID } = require("../validators/post");
 const {
   createPost,
   getPosts,
@@ -19,17 +19,17 @@ router.post(
 
 router.get("/", getPosts);
 
-router.get("/:id", [validatorGetPost], getPost);
+router.get("/:id", [validatorID], getPost);
 
 router.put(
   "/:id",
-  [checkAuth, checkRol(["master"]), validatorPost, validatorGetPost],
+  [checkAuth, checkRol(["master"]), validatorPost, validatorID],
   updatePost
 );
 
 router.delete(
   "/:id",
-  [checkRol(["admin", "master"]), validatorGetPost],
+  [checkRol(["admin", "master"]), validatorID],
   deletePost
 );
 

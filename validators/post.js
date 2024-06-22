@@ -31,11 +31,21 @@ const validatorPost = [
   },
 ];
 
-const validatorGetPost = [
+const validatorPoster = [
+  check("descripcion", "Debes ingresar descripcion").exists().notEmpty(),
+  check("url", "Debes ingresar url").exists().notEmpty(),
+  check("categoria", "Debes ingresar categoria").exists().notEmpty(),
+  check("item", "Debes ingresar item").exists().notEmpty(),
+  (req, res, next) => {
+    validateResult(req, res, next);
+  },
+];
+
+const validatorID = [
   check("id", "Debes ingresar un id valido").exists().notEmpty().isMongoId(),
   (req, res, next) => {
     validateResult(req, res, next);
   },
 ];
 
-module.exports = { validatorPost, validatorGetPost };
+module.exports = { validatorPost, validatorID, validatorPoster };

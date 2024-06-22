@@ -1,5 +1,5 @@
 const models = {
-  informationStoragesModels: require("./nosql/informationStorage"),
+  postersModel: require("./nosql/posters"),
   storagesModels: require("./nosql/storages"),
   userModel: require("./nosql/users"),
   postModel: require("./nosql/posts"),

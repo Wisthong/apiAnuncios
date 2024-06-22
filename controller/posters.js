@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { response, request } = require("express");
-const { informationStoragesModels } = require("../model/index");
+const { postersModel } = require("../model/index");
 const {
   handleHttpError,
   handleErrorResponse,
@@ -13,26 +13,42 @@ const PATH = `${__dirname}/../storage`;
 
 const getItems = async (req = request, res = response) => {
   try {
-    const data = await informationStoragesModels.findAllData({});
-    // const data = await informationStoragesModels.find({});
-    res.send({
-      data,
-      ok: true,
-      message: "Has obtenido la lista de las imagenes",
-    });
+    const data = await postersModel.find({});
+    // const data = await postersModel.findAllData({});
+
+    if (data.length > 0) {
+      return res.send({
+        data,
+        ok: true,
+        message: "Has obtenido la lista de poster",
+      });
+    } else {
+      return res.send({
+        data,
+        ok: false,
+        message: "No hay post",
+      });
+    }
   } catch (error) {
-    res.send("Error en la peticion getAll", error);
+    res.send("Error en la peticion getAll_posters", error);
   }
 };
 
 const getItem = async (req = request, res = response) => {
   try {
     const { id } = matchedData(req);
-    const data = await informationStoragesModels.findById(id);
-    res.send({
+    const data = await postersModel.findById(id);
+    if (!data) {
+      return res.send({
+        data,
+        ok: false,
+        message: "No aparece en nuestra base de datos el id que buscas",
+      });
+    }
+    return res.send({
       data,
       ok: true,
-      message: "Has obtenido la imagen",
+      message: "Has obtenido el detalle del post",
     });
   } catch (error) {
     res.send("Error en la peticion getItem", error);
@@ -50,7 +66,7 @@ const getItem = async (req = request, res = response) => {
 //       usuario: user,
 //       usuario: user,
 //     };
-//     const data = await informationStoragesModels.create(fileData);
+//     const data = await postersModel.create(fileData);
 //     res.send({
 //       data,
 //       ok: true,
@@ -64,29 +80,39 @@ const getItem = async (req = request, res = response) => {
 const createItem = async (req, res) => {
   try {
     const { user } = req;
-    const { body, file } = req;
-    const fileData = {
-      filename: file.filename,
-      url: file.path,
-      usuario: user,
-    };
-    const data = await informationStoragesModels.create(fileData);
-    res.send({
+    const { body } = req;
+
+    const data = await postersModel.create(body);
+    if (!data) {
+      return res.send({
+        ok: false,
+        message: "No ha sido posible hacer el registro",
+      });
+    }
+    return res.send({
       data,
       ok: true,
-      message: "Se subio la imagen",
+      message: "Se registro el post de manera exitosa",
     });
   } catch (error) {
-    handleErrorResponse(res, "Error al subir archivo", 404);
+    handleErrorResponse(res, "Error en la peticion", 404);
   }
 };
 
 const deleteItem = async (req = request, res = response) => {
   try {
     const { id } = matchedData(req);
-    const dataFile = await informationStoragesModels.findById(id);
+    const dataFile = await postersModel.findById(id);
+
+    if (!dataFile) {
+      return res.send({
+        ok: false,
+        message: "No hemos encontrado el id del post",
+      });
+    }
+
     const { filename } = dataFile;
-    await informationStoragesModels.delete({ _id: id });
+    const datos = await postersModel.delete({ _id: id });
     const PATH_FILE = `${PATH}/${filename}`;
 
     // fs.unlinkSync(PATH_FILE);
@@ -94,7 +120,7 @@ const deleteItem = async (req = request, res = response) => {
       dataFile,
       // deleted: true,
     };
-    res.send({
+    return res.send({
       data,
       ok: true,
       message: "Has eliminado la imagen",

@@ -4,9 +4,10 @@ const signToken = async (user) => {
   return sign(
     {
       _id: user._id,
-      name: user.name,
-      lastname: user.lastname,
-      email: user.email,
+      nombre: user.nombre,
+      apellido: user.apellido,
+      documento: user.documento,
+      orreo_electronico: user.orreo_electronico,
       role: user.role,
     },
     process.env.SECRET,
