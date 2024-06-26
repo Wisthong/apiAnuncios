@@ -12,15 +12,15 @@ const validatorUserRegister = [
     .notEmpty()
     .isLength({ max: 100 })
     .withMessage("Maximo 100 caracteres"),
+  check("documento", "El campo documento es obligatorio")
+    .exists()
+    .notEmpty()
+    .isDecimal(),
   check("correo_electronico", "El campo correo_electronico es obligatorio")
-    .exists()
-    .notEmpty()
     .isEmail()
+    // .exists()
+    // .notEmpty()
     .withMessage("Debes introducir una dirección de correo valida"),
-  check("documento", "El campo número de documento es obligatorio")
-    .exists()
-    .notEmpty()
-    .isNumeric(),
   check("contrasena", "El campo contrasena es obligatorio")
     .exists()
     .notEmpty()

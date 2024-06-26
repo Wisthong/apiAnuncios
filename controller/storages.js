@@ -8,7 +8,7 @@ const {
 const { matchedData } = require("express-validator");
 const { signToken } = require("../helpers/handleJwt");
 
-const PUBLIC_URL = process.env.PUBLIC_URL;
+// const PUBLIC_URL = process.env.PUBLIC_URL;
 const PATH = `${__dirname}/../storage`;
 
 const getItems = async (req = request, res = response) => {

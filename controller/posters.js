@@ -8,7 +8,7 @@ const {
 const { matchedData } = require("express-validator");
 const { signToken } = require("../helpers/handleJwt");
 
-const PUBLIC_URL = process.env.PUBLIC_URL;
+// const PUBLIC_URL = process.env.PUBLIC_URL;
 const PATH = `${__dirname}/../storage`;
 
 const getItems = async (req = request, res = response) => {
@@ -30,7 +30,11 @@ const getItems = async (req = request, res = response) => {
       });
     }
   } catch (error) {
-    res.send("Error en la peticion getAll_posters", error);
+    res.status(500).send({
+      error,
+      ok: false,
+      message: "Error interno del servidor al procesar la petición",
+    });
   }
 };
 
@@ -51,31 +55,13 @@ const getItem = async (req = request, res = response) => {
       message: "Has obtenido el detalle del post",
     });
   } catch (error) {
-    res.send("Error en la peticion getItem", error);
+    res.status(500).send({
+      error,
+      ok: false,
+      message: "Error interno del servidor al procesar la petición",
+    });
   }
 };
-
-// const createItem = async (req = request, res = response) => {
-//   try {
-//     const { user } = req;
-//     const token = await signToken(user);
-//     const { body, file } = req;
-//     const fileData = {
-//       filename: file.filename,
-//       url: `${PUBLIC_URL}/${file.filename}`,
-//       usuario: user,
-//       usuario: user,
-//     };
-//     const data = await postersModel.create(fileData);
-//     res.send({
-//       data,
-//       ok: true,
-//       message: "Se subio la imagen",
-//     });
-//   } catch (error) {
-//     res.send("Error en la peticion create", error);
-//   }
-// };
 
 const createItem = async (req, res) => {
   try {
@@ -95,39 +81,78 @@ const createItem = async (req, res) => {
       message: "Se registro el post de manera exitosa",
     });
   } catch (error) {
-    handleErrorResponse(res, "Error en la peticion", 404);
+    res.status(500).send({
+      error,
+      ok: false,
+      message: "Error interno del servidor al procesar la petición",
+    });
   }
 };
 
 const deleteItem = async (req = request, res = response) => {
   try {
     const { id } = matchedData(req);
-    const dataFile = await postersModel.findById(id);
+    const query = await postersModel.findById(id);
 
-    if (!dataFile) {
-      return res.send({
+    if (!query) {
+      return res.status(404).send({
         ok: false,
-        message: "No hemos encontrado el id del post",
+        message: "El id de no existe en la DB",
       });
     }
 
-    const { filename } = dataFile;
-    const datos = await postersModel.delete({ _id: id });
-    const PATH_FILE = `${PATH}/${filename}`;
+    const query1 = await postersModel.deleteById({ _id: id });
 
-    // fs.unlinkSync(PATH_FILE);
-    const data = {
-      dataFile,
-      // deleted: true,
-    };
     return res.send({
-      data,
       ok: true,
-      message: "Has eliminado la imagen",
+      message: "Se elimino correctamente",
+      data: query1,
     });
   } catch (error) {
-    res.send("Error en la peticion delete", error);
+    res.status(500).send({
+      error,
+      ok: false,
+      message: "Error interno del servidor al procesar la petición",
+    });
   }
 };
 
-module.exports = { getItems, createItem, deleteItem, getItem };
+const updateItem = async (req = request, res = response) => {
+  try {
+    const { id, ...body } = matchedData(req);
+
+    const query = await postersModel.findById(id);
+
+    if (!query) {
+      return res.status(404).send({
+        ok: false,
+        message: "El id de no existe en la DB",
+      });
+    }
+
+    // TODO: query1 ejecuta la funcion de actualizar === put
+    const query1 = await postersModel.findByIdAndUpdate(id, body, {
+      new: true,
+    });
+
+    if (!query1) {
+      return res.status(404).send({
+        ok: false,
+        message: "No se pudo actualizar el post",
+      });
+    }
+    return res.send({
+      ok: true,
+      message: "Actualización del post de manera exitosa",
+      data: query1,
+    });
+  } catch (error) {
+    res.status(500).send({
+      error,
+      ok: false,
+      message: "Error interno del servidor al procesar la petición",
+    });
+  }
+};
+
+module.exports = { getItems, createItem, deleteItem, getItem, updateItem };

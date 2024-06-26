@@ -44,7 +44,6 @@ const userRegister = async (req = request, res = response) => {
     });
   }
 };
-
 const userLogin = async (req = request, res = response) => {
   try {
     const body = matchedData(req);

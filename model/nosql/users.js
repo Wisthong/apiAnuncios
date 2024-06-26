@@ -11,10 +11,6 @@ const UserSchema = new Schema(
       type: String,
       required: true,
     },
-    documento: {
-      type: Number,
-      required: true,
-    },
     correo_electronico: {
       type: String,
       unique: true,

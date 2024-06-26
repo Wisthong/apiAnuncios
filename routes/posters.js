@@ -3,6 +3,7 @@ const {
   createItem,
   getItem,
   getItems,
+  updateItem,
   deleteItem,
 } = require("../controller/posters");
 // const { uploadMiddleware } = require("../utils/handleStorage");
@@ -14,8 +15,14 @@ const router = express.Router();
 
 router.post(
   "/",
-  [checkAuth, checkRol(["admin", "master"]), validatorPoster],
+  [checkAuth, checkRol(["admin", "master"]), [validatorPoster]],
   createItem
+);
+
+router.put(
+  "/:id",
+  [checkAuth, checkRol(["admin", "master"]), [validatorID, validatorPoster]],
+  updateItem
 );
 
 router.get("/", getItems);
@@ -24,7 +31,7 @@ router.get("/:id", [validatorID], getItem);
 
 router.delete(
   "/:id",
-  [checkAuth, checkRol(["admin", "master"]), validatorID],
+  [checkAuth, checkRol(["admin", "master"]), [validatorID]],
   deleteItem
 );
 
