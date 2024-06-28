@@ -20,7 +20,7 @@ const checkAuth = async (req = request, res = response, next) => {
 
     const user = await userModel
       .findById(dataToken._id)
-      .select("_id name lastname email role");
+      .select("_id nombre apellido documento correo_electronico role");
     req.user = user;
     next();
   } catch (e) {

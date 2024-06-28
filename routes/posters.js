@@ -3,24 +3,31 @@ const {
   createItem,
   getItem,
   getItems,
+  updateItem,
   deleteItem,
-} = require("../controller/storages");
+} = require("../controller/posters");
 // const { uploadMiddleware } = require("../utils/handleStorage");
-const { uploadMiddleware } = require("../utils/handleStorageCloudinary");
+const { uploadMiddleware } = require("../utils/handleStorageGalery");
 const { checkAuth } = require("../middlewares/authSesion");
 const { checkRol } = require("../middlewares/rol");
+const { validatorPoster, validatorID } = require("../validators/post");
 const router = express.Router();
-const { validatorID } = require("../validators/post");
 
 router.post(
   "/",
-  [checkAuth, checkRol(["admin", "master"]), uploadMiddleware.single("myFile")],
+  [checkAuth, checkRol(["admin", "master"]), [validatorPoster]],
   createItem
+);
+
+router.put(
+  "/:id",
+  [checkAuth, checkRol(["admin", "master"]), [validatorID, validatorPoster]],
+  updateItem
 );
 
 router.get("/", getItems);
 
-router.get("/:id", getItem);
+router.get("/:id", [validatorID], getItem);
 
 router.delete(
   "/:id",

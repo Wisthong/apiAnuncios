@@ -1,28 +1,31 @@
 const { Schema, model } = require("mongoose");
+const mongoose_delete = require("mongoose-delete");
 
-const UserSchema = Schema(
+const UserSchema = new Schema(
   {
-    name: {
+    nombre: {
       type: String,
       required: true,
     },
-    lastname: {
+    apellido: {
       type: String,
       required: true,
     },
-    email: {
+    correo_electronico: {
       type: String,
       unique: true,
       required: true,
     },
-    password: {
+    contrasena: {
       type: String,
       required: true,
       // select: false,
     },
     role: {
-      type: ["user", "admin"],
-      default: ["user"],
+      type: String,
+      default: "user",
+      // type: ["user", "admin", "master"],
+      // default: ["user"],
     },
   },
   {
@@ -31,4 +34,10 @@ const UserSchema = Schema(
   }
 );
 
+UserSchema.methods.toJSON = function () {
+  const { contrasena, ...user } = this.toObject();
+  return user;
+};
+
+UserSchema.plugin(mongoose_delete, { overrideMethods: "all" });
 module.exports = model("users", UserSchema);
