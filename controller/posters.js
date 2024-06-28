@@ -13,8 +13,8 @@ const PATH = `${__dirname}/../storage`;
 
 const getItems = async (req = request, res = response) => {
   try {
-    const data = await postersModel.find({});
-    // const data = await postersModel.findAllData({});
+    // const data = await postersModel.find({});
+    const data = await postersModel.findAllData({});
 
     if (data.length > 0) {
       return res.send({
@@ -41,7 +41,8 @@ const getItems = async (req = request, res = response) => {
 const getItem = async (req = request, res = response) => {
   try {
     const { id } = matchedData(req);
-    const data = await postersModel.findById(id);
+    const data = await postersModel.findOneData(id);
+    // const data = await postersModel.findById(id);
     if (!data) {
       return res.send({
         data,

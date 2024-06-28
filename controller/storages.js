@@ -1,6 +1,6 @@
 const fs = require("fs");
 const { response, request } = require("express");
-const { storagesModels } = require("../model/index");
+const { storagesModels, postersModel } = require("../model/index");
 const {
   handleHttpError,
   handleErrorResponse,
@@ -39,7 +39,6 @@ const getItem = async (req = request, res = response) => {
   }
 };
 
-
 const createItem = async (req, res) => {
   try {
     const { user } = req;
@@ -63,24 +62,67 @@ const createItem = async (req, res) => {
 const deleteItem = async (req = request, res = response) => {
   try {
     const { id } = matchedData(req);
-    const dataFile = await storagesModels.findById(id);
-    const { filename } = dataFile;
-    await storagesModels.delete({ _id: id });
-    const PATH_FILE = `${PATH}/${filename}`;
+    const query = await storagesModels.findById(id);
 
-    // fs.unlinkSync(PATH_FILE);
-    const data = {
-      dataFile,
-      // deleted: true,
-    };
-    res.send({
-      data,
+    if (!query) {
+      return res.status(404).send({
+        ok: false,
+        message: "El id de no existe en la DB",
+      });
+    }
+
+    const query1 = await storagesModels.deleteById({ _id: id });
+
+    if (!query1) {
+      return res.status(404).send({
+        ok: false,
+        message: "No se pudo eliminar la imagen",
+      });
+    }
+
+    const query2 = await postersModel.deleteMany({ imagen: id });
+    if (!query2) {
+      return res.status(404).send({
+        ok: false,
+        message: "No se pudo realizar el borrado en cascada",
+      });
+    }
+
+    return res.send({
       ok: true,
-      message: "Has eliminado la imagen",
+      message: "Se elimino correctamente",
+      data: query1,
     });
   } catch (error) {
-    res.send("Error en la peticion delete", error);
+    res.status(500).send({
+      error,
+      ok: false,
+      message: "Error interno del servidor al procesar la petición",
+    });
   }
 };
+
+// const deleteItem = async (req = request, res = response) => {
+//   try {
+//     const { id } = matchedData(req);
+//     const dataFile = await storagesModels.findById(id);
+//     const { filename } = dataFile;
+//     await storagesModels.delete({ _id: id });
+//     const PATH_FILE = `${PATH}/${filename}`;
+
+//     // fs.unlinkSync(PATH_FILE);
+//     const data = {
+//       dataFile,
+//       // deleted: true,
+//     };
+//     res.send({
+//       data,
+//       ok: true,
+//       message: "Has eliminado la imagen",
+//     });
+//   } catch (error) {
+//     res.send("Error en la peticion delete", error);
+//   }
+// };
 
 module.exports = { getItems, createItem, deleteItem, getItem };

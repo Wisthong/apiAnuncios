@@ -33,7 +33,10 @@ const validatorPost = [
 
 const validatorPoster = [
   check("descripcion", "Debes ingresar descripcion").exists().notEmpty(),
-  check("url", "Debes ingresar url").exists().notEmpty(),
+  check("imagen", "Debes ingresar un imagen valido")
+    .exists()
+    .notEmpty()
+    .isMongoId(),
   check("categoria", "Debes ingresar categoria").exists().notEmpty(),
   check("item", "Debes ingresar item").exists().notEmpty(),
   (req, res, next) => {

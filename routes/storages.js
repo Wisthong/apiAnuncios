@@ -10,6 +10,7 @@ const { uploadMiddleware } = require("../utils/handleStorageCloudinary");
 const { checkAuth } = require("../middlewares/authSesion");
 const { checkRol } = require("../middlewares/rol");
 const router = express.Router();
+const { validatorID } = require("../validators/post");
 
 router.post(
   "/",
@@ -21,6 +22,10 @@ router.get("/", getItems);
 
 router.get("/:id", getItem);
 
-router.delete("/:id", [checkAuth, checkRol(["admin", "master"])], deleteItem);
+router.delete(
+  "/:id",
+  [checkAuth, checkRol(["admin", "master"]), [validatorID]],
+  deleteItem
+);
 
 module.exports = router;
